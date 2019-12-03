@@ -37,7 +37,7 @@ public class Main {
         public void paint(Graphics g) {
             BufferedImage bi = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
             Graphics2D gr = (Graphics2D) bi.getGraphics();
-            gr.setColor(Color.WHITE);
+            gr.setColor(Color.BLACK);
             gr.fillRect(0,0,getWidth(),getHeight());
 
             sc.setHs(getHeight());

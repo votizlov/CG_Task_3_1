@@ -1,12 +1,14 @@
 import java.awt.*;
 import java.util.LinkedList;
 
-public class PolyLine2D implements IFIgure {
+public class PolyLine2D implements IFIgure {//всегда замкнутая
+
     private LinkedList<Section> sections;
 
     public PolyLine2D(LinkedList<Section> sections) {
         this.sections = sections;
     }
+
     public PolyLine2D() {sections = new LinkedList<>();}
 
     @Override

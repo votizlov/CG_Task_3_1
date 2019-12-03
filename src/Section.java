@@ -5,7 +5,7 @@ import static java.lang.Math.*;
 
 public class Section implements IFIgure {
     private RealPoint p1;
-    private static final double e = 1;
+    private static final double e = 0.000001;
 
     public Section(RealPoint p1, RealPoint p2) {
         this.p1 = p1;
@@ -119,41 +119,43 @@ public class Section implements IFIgure {
 
     public LinkedList<RealPoint> getPointsInsideTriangle(Triangle triangle) {
         LinkedList<RealPoint> answer = new LinkedList<>();
-        double precision = 0.001;
+        // calculate dx & dy
         double dx = p2.getX() - p1.getX();
         double dy = p2.getY() - p1.getY();
 
-        double vx, vy;
+        // calculate steps required for generating pixels
+        double steps = Math.max(abs(dx), abs(dy));
 
-        if (dx < 0)
-            vx = -precision;
-        else
-            vx = precision;
-        if (dy < 0)
-            vy = -precision;
-        else
-            vx = precision;
+        // calculate increment in x & y for each steps
+        double Xinc = dx / steps;
+        double Yinc = dy / steps;
 
-        RealPoint[] realPoints = new RealPoint[]{triangle.getS1().p1,triangle.getS2().p1,triangle.getS3().p1};
+        // Put pixel for each step
+        double X = p1.getX();
+        double Y = p1.getY();
 
-        for (double i = 0; i < abs(dy); i += vy)
-            for (double j = 0; j < abs(dx); j += vx) {
-                LinkedList<Vector2> centerPointsV = new LinkedList<>();
-                for (int k = 0; k < 3; k++) {
-                    centerPointsV.add(new Vector2(new RealPoint(j,i),realPoints[k]));
-                }
-                double cos = 0;
-                Vector2 line = centerPointsV.getFirst();
-                Vector3 line2;
-                for (int k = 1; k < centerPointsV.size(); k++) {
-                    line2 = centerPointsV.get(k);
-                    cos += cos(line.dot(line2) / (line.length() * line2.length()));
-                }
+        RealPoint[] realPoints = new RealPoint[]{triangle.getS1().p1, triangle.getS2().p1, triangle.getS3().p1};
 
-                if (cos - 2 * PI < precision) {
-                    answer.add(new RealPoint(j,i));
-                }
+        for (int i = 0; i <= steps; i++) {
+            LinkedList<Vector2> centerPointsV = new LinkedList<>();
+            for (int k = 0; k < 3; k++) {
+                centerPointsV.add(new Vector2(new RealPoint(X, Y), realPoints[k]));
             }
+            double cos = 0;
+            Vector2 line = centerPointsV.getFirst();
+            Vector2 line2;
+            for (int k = 1; k < centerPointsV.size(); k++) {
+                line2 = centerPointsV.get(k);
+                cos += cos(line.dot(line2) / (line.length() * line2.length()));
+            }
+
+            if (cos - 2 * PI < e) {
+                answer.add(new RealPoint(X, Y));
+            }
+
+            X += Xinc;           // increment in x at each step
+            Y += Yinc;           // increment in y at each step
+        }
         return answer;
     }
 }
