@@ -30,8 +30,8 @@ public class Section implements IFIgure {
 
     private RealPoint p2;
 
-    public double length (){
-        return sqrt(pow(p1.getX()-p2.getX(),2)+pow(p1.getY()-p2.getY(),2));
+    public double length() {
+        return sqrt(pow(p1.getX() - p2.getX(), 2) + pow(p1.getY() - p2.getY(), 2));
     }
 
     @Override
@@ -52,7 +52,7 @@ public class Section implements IFIgure {
 
         if (a1 / -b1 == a2 / -b2 && c1 / -b1 == c2 / -b2) {
             System.out.println("fk");
-            if(this.length() >j.length()) { //здесь обрабатывается случай, когда одна сторона лежит на другой
+            if (this.length() > j.length()) { //здесь обрабатывается случай, когда одна сторона лежит на другой
                 list.add(j.p1);
                 list.add(j.p2);
                 return list;
@@ -62,12 +62,12 @@ public class Section implements IFIgure {
                 return list;
             }
         } else {
-            double x1 = min(p1.getX(),p2.getX());
-            double x2 = min(j.p1.getX(),j.p2.getX());
-            for (double i = x1;i<max(p1.getX(),p2.getX());i+=e){
-                for (double k = x2;k<min(p1.getX(),p2.getX());k+=e){
-                    if(abs(a1*i/(-b1)+c1/(-b1)-a2*k/(-b2)+c2/(-b2))<e){
-                        list.add(new RealPoint(i,k));
+            double x1 = min(p1.getX(), p2.getX());
+            double x2 = min(j.p1.getX(), j.p2.getX());
+            for (double i = x1; i < max(p1.getX(), p2.getX()); i += e) {
+                for (double k = x2; k < min(p1.getX(), p2.getX()); k += e) {
+                    if (abs(a1 * i / (-b1) + c1 / (-b1) - a2 * k / (-b2) + c2 / (-b2)) < e) {
+                        list.add(new RealPoint(i, k));
                         return list;
                     }
                 }
@@ -89,13 +89,13 @@ public class Section implements IFIgure {
 
         double A2 = (j.p1.getY() - j.p2.getY()) / (j.p1.getX() - j.p2.getX());
 
-         b1 = p1.getY() - A1 * p1.getX();
+        b1 = p1.getY() - A1 * p1.getX();
 
-         b2 = j.p1.getY() - A2 * j.p1.getX();
+        b2 = j.p1.getY() - A2 * j.p1.getX();
 
         if (A1 == A2) {
 
-           // return false; //отрезки параллельны
+            // return false; //отрезки параллельны
 
         }
 
@@ -105,14 +105,12 @@ public class Section implements IFIgure {
         double Ya = A1 * Xa + b1;
         System.out.println(Xa);
 
-        if ((Xa < Math.max(p1.getX(), j.p1.getX())) || (Xa > Math.min( p2.getX(), j.p2.getX()))) {
+        if ((Xa < Math.max(p1.getX(), j.p1.getX())) || (Xa > Math.min(p2.getX(), j.p2.getX()))) {
 
             //return false; //точка Xa находится вне пересечения проекций отрезков на ось X
 
-        }
-
-        else {
-            list.add(new RealPoint(Xa,Ya));
+        } else {
+            list.add(new RealPoint(Xa, Ya));
             return list;
 
         }
@@ -120,6 +118,42 @@ public class Section implements IFIgure {
     }
 
     public LinkedList<RealPoint> getPointsInsideTriangle(Triangle triangle) {
-        return null;
+        LinkedList<RealPoint> answer = new LinkedList<>();
+        double precision = 0.001;
+        double dx = p2.getX() - p1.getX();
+        double dy = p2.getY() - p1.getY();
+
+        double vx, vy;
+
+        if (dx < 0)
+            vx = -precision;
+        else
+            vx = precision;
+        if (dy < 0)
+            vy = -precision;
+        else
+            vx = precision;
+
+        RealPoint[] realPoints = new RealPoint[]{triangle.getS1().p1,triangle.getS2().p1,triangle.getS3().p1};
+
+        for (double i = 0; i < abs(dy); i += vy)
+            for (double j = 0; j < abs(dx); j += vx) {
+                LinkedList<Vector2> centerPointsV = new LinkedList<>();
+                for (int k = 0; k < 3; k++) {
+                    centerPointsV.add(new Vector2(new RealPoint(j,i),realPoints[k]));
+                }
+                double cos = 0;
+                Vector2 line = centerPointsV.getFirst();
+                Vector3 line2;
+                for (int k = 1; k < centerPointsV.size(); k++) {
+                    line2 = centerPointsV.get(k);
+                    cos += cos(line.dot(line2) / (line.length() * line2.length()));
+                }
+
+                if (cos - 2 * PI < precision) {
+                    answer.add(new RealPoint(j,i));
+                }
+            }
+        return answer;
     }
 }
