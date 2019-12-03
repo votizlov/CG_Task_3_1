@@ -8,16 +8,18 @@ public class Intersector {
         LinkedList<RealPoint> t = null;
         LinkedList<RealPoint> intersectionPoints = new LinkedList<>();
 
-        for (Section i : triangle.getSectionsAsArr()
-        ) {
-            for (Section j : triangle1.getSectionsAsArr()
-            ) {
-                t = i.getIntersection(j);
-                if (t != null)
-                    intersectionPoints.addAll(t);
-            }
+        for (Section s:triangle.getSectionsAsArr()){
+            t =s.getPointsInsideTriangle(triangle1);
+            if(t!= null)
+                intersectionPoints.addAll(t);
         }
-        System.out.println(intersectionPoints.size());
+
+        for (Section s:triangle1.getSectionsAsArr()){
+            t =s.getPointsInsideTriangle(triangle);
+            if(t!= null)
+                intersectionPoints.addAll(t);
+        }
+
         PolyLine2D polyLine2D = new PolyLine2D();
         if (intersectionPoints.size() != 0) {
             polyLine2D.addSectionsFromPointsList(intersectionPoints);

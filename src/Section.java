@@ -76,4 +76,8 @@ public class Section implements IFIgure {
         }
         return null;
     }
+
+    public LinkedList<RealPoint> getPointsInsideTriangle(Triangle triangle) {
+        return null;
+    }
 }
