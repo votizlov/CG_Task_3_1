@@ -5,6 +5,7 @@ import static java.lang.Math.*;
 
 public class Section implements IFIgure {
     private RealPoint p1;
+    private static final double e = 1;
 
     public Section(RealPoint p1, RealPoint p2) {
         this.p1 = p1;
@@ -50,8 +51,8 @@ public class Section implements IFIgure {
 
 
         if (a1 / -b1 == a2 / -b2 && c1 / -b1 == c2 / -b2) {
-            System.out.println("k");
-            if(this.length() >j.length()) {
+            System.out.println("fk");
+            if(this.length() >j.length()) { //здесь обрабатывается случай, когда одна сторона лежит на другой
                 list.add(j.p1);
                 list.add(j.p2);
                 return list;
@@ -61,18 +62,59 @@ public class Section implements IFIgure {
                 return list;
             }
         } else {
-            double x = (-c1 / (-b1) - c2) / (a2 + a1 / (-b1));
-            double y = a1 * x / (-b1) + c1 / (-b1);
-            System.out.println(x + " " + y);
-            if (a1 * x + b1 * y + c1 < 0.1
-                    && a2 * x + b2 * y + c2 < 0.1
-                    //&& x > min(min(p1.getX(),p2.getX()),min(j.p1.getX(),j.p2.getX()))
-                    //&& x < max(max(p1.getX(),p2.getX()),max(j.p1.getX(),j.p2.getX()))
-            ) {
-                list.add(new RealPoint(x, y));
-                System.out.println("point");
-                return list;
+            double x1 = min(p1.getX(),p2.getX());
+            double x2 = min(j.p1.getX(),j.p2.getX());
+            for (double i = x1;i<max(p1.getX(),p2.getX());i+=e){
+                for (double k = x2;k<min(p1.getX(),p2.getX());k+=e){
+                    if(abs(a1*i/(-b1)+c1/(-b1)-a2*k/(-b2)+c2/(-b2))<e){
+                        list.add(new RealPoint(i,k));
+                        return list;
+                    }
+                }
             }
+        }
+
+
+//проверим существование потенциального интервала для точки пересечения отрезков
+
+        if (p2.getX() < j.p1.getX()) {
+
+            return null; //ибо у отрезков нету взаимной абсциссы
+
+        }
+
+//оба отрезка невертикальные
+
+        double A1 = (p1.getY() - p2.getY()) / (p1.getX() - p2.getX());
+
+        double A2 = (j.p1.getY() - j.p2.getY()) / (j.p1.getX() - j.p2.getX());
+
+         b1 = p1.getY() - A1 * p1.getX();
+
+         b2 = j.p1.getY() - A2 * j.p1.getX();
+
+        if (A1 == A2) {
+
+           // return false; //отрезки параллельны
+
+        }
+
+//Xa - абсцисса точки пересечения двух прямых
+
+        double Xa = (b2 - b1) / (A1 - A2);
+        double Ya = A1 * Xa + b1;
+        System.out.println(Xa);
+
+        if ((Xa < Math.max(p1.getX(), j.p1.getX())) || (Xa > Math.min( p2.getX(), j.p2.getX()))) {
+
+            //return false; //точка Xa находится вне пересечения проекций отрезков на ось X
+
+        }
+
+        else {
+            list.add(new RealPoint(Xa,Ya));
+            return list;
+
         }
         return null;
     }
