@@ -137,18 +137,18 @@ public class Section implements IFIgure {
         double X = p1.getX();
         double Y = p1.getY();
 
-        //RealPoint[] realPoints = new RealPoint[]{triangle.getS1().p1, triangle.getS2().p1, triangle.getS3().p1};
+        double x1 = triangle.getS1().p1.getX();
+        double y1 = triangle.getS1().p1.getY();
+        double x2 = triangle.getS1().p2.getX();
+        double y2 = triangle.getS1().p2.getY();
+        double x3 = triangle.getS2().p2.getX();
+        double y3 = triangle.getS2().p2.getY();
 
         for (int i = 0; i <= steps; i++) {
-            boolean isInside = true;
-            for (Section s: triangle.getSectionsAsArr()
-                 ) {
-                if(!(((s.p2.getX()-s.p1.getX())*(Y-s.getP1().getY())-(s.getP2().getY()-s.getP1().getY())*(X-s.getP1().getX()))>=0))
-                    isInside = false;
-            }
-            if(isInside){
-                answer.add(new RealPoint(X,Y));
-            }
+            double k= (x1 - X) * (y2 - y1) - (x2 - x1) * (y1 - Y);
+            double m= (x2 - X) * (y3 - y2) - (x3 - x2) * (y2 - Y);
+            double n= (x3 - X) * (y1 - y3) - (x1 - x3) * (y3 - Y);
+            if((k>=0 && m>=0 && n>=0) || (k<=0 && m<=0 && n<=0)){ answer.add(new RealPoint(X,Y));}
 
             X += Xinc;           // increment in x at each step
             Y += Yinc;           // increment in y at each step

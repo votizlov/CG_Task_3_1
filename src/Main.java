@@ -23,12 +23,12 @@ public class Main {
             super();
             sc = new ScreenConverter(-2, 2, 4, 4, 500, 500);
             figuresList.add(new Triangle(
-                    new Section(new RealPoint(-1, -1), new RealPoint(1, 2)),
+                    new Section(new RealPoint(-2, 0), new RealPoint(1, 2)),
                     new Section(new RealPoint(1, 2), new RealPoint(1, 0)),
-                    new Section(new RealPoint(1, 0), new RealPoint(-1, -1))));
+                    new Section(new RealPoint(1, 0), new RealPoint(-2, 0))));
             figuresList.add(new Triangle(
-                    new Section(new RealPoint(-1, 0), new RealPoint(1, 1.5)),
-                    new Section(new RealPoint(1, 1.5), new RealPoint(0, 1)),
+                    new Section(new RealPoint(-1, 0), new RealPoint(0, 1.5)),
+                    new Section(new RealPoint(0, 1.5), new RealPoint(0, 1)),
                     new Section(new RealPoint(0, 1), new RealPoint(-1, 0))));
             in = new Intersector();
         }
