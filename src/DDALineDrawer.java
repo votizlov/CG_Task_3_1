@@ -42,4 +42,8 @@ public class DDALineDrawer implements LineDrawer {
     public void setPixelDrawer(PixelDrawer pixelDrawer) {
         this.pd = pixelDrawer;
     }
+
+    public void drawLine(double x, double y, double x1, double y1, Color c) {
+        drawLine((int) x,(int)y,(int) x1,(int) y1,c);
+    }
 }

@@ -19,6 +19,13 @@ public class PolyLine2D implements IFIgure {//всегда замкнутая
         }
     }
 
+    public void draw(DDALineDrawer ld, Color c) {
+        for (Section s:sections
+        ) {
+            s.draw(ld,c);
+        }
+    }
+
     public LinkedList<Section> getSections() {
         return sections;
     }

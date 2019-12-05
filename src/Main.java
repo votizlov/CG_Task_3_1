@@ -52,8 +52,7 @@ public class Main {
                 t.draw(ld, sc, Color.gray);
             }
 
-            in.findIntersectionContour(figuresList.get(0), figuresList.get(1)).draw(ld, sc, Color.RED);
-            //in.fillIntersectionContour(bi,Color.gray,Color.BLUE);
+            in.findIntersectionContour(figuresList.get(0), figuresList.get(1),sc).draw(ld, Color.RED);
 
             g.drawImage(bi, 0, 0, null);
         }

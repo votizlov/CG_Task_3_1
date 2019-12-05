@@ -40,6 +40,10 @@ public class Section implements IFIgure {
         ld.drawLine(sc.realToScreen(p1).getI(), sc.realToScreen(p1).getJ(), sc.realToScreen(p2).getI(), sc.realToScreen(p2).getJ(), c);
     }
 
+    public void draw(DDALineDrawer ld, Color c) {
+        ld.drawLine(p1.getX(), p1.getY(), p2.getX(), p2.getY(), c);
+    }
+
     /*
         public LinkedList<RealPoint> getIntersection(Section j) {
             LinkedList<RealPoint> list = new LinkedList<>();
@@ -119,36 +123,38 @@ public class Section implements IFIgure {
             return null;
         }
     */
-    public LinkedList<RealPoint> getPointsInsideTriangle(Triangle triangle) {
+    public LinkedList<RealPoint> getPointsInsideTriangle(Triangle triangle, ScreenConverter sc) {
+
         LinkedList<RealPoint> answer = new LinkedList<>();
         // calculate dx & dy
-        double dx = p2.getX() - p1.getX();
-        double dy = p2.getY() - p1.getY();
+        int dx = sc.realToScreen(p2).getI() - sc.realToScreen(p1).getI();
+        int dy = sc.realToScreen(p2).getJ() - sc.realToScreen(p1).getJ();
 
         // calculate steps required for generating pixels
-        double steps = abs(dx) > abs(dy) ? abs(dx) : abs(dy);
-        System.out.println(steps);
+        int steps = abs(dx) > abs(dy) ? abs(dx) : abs(dy);
 
         // calculate increment in x & y for each steps
-        double Xinc = dx / steps;
-        double Yinc = dy / steps;
+        double Xinc = dx / (double) steps;
+        double Yinc = dy / (double) steps;
 
         // Put pixel for each step
-        double X = p1.getX();
-        double Y = p1.getY();
+        double X = sc.realToScreen(p1).getI();
+        double Y = sc.realToScreen(p1).getJ();
 
-        double x1 = triangle.getS1().p1.getX();
-        double y1 = triangle.getS1().p1.getY();
-        double x2 = triangle.getS1().p2.getX();
-        double y2 = triangle.getS1().p2.getY();
-        double x3 = triangle.getS2().p2.getX();
-        double y3 = triangle.getS2().p2.getY();
+        int x1 = sc.realToScreen(triangle.getS1().p1).getI();
+        int y1 = sc.realToScreen(triangle.getS1().p1).getJ();
+        int x2 = sc.realToScreen(triangle.getS1().p2).getI();
+        int y2 = sc.realToScreen(triangle.getS1().p2).getJ();
+        int x3 = sc.realToScreen(triangle.getS2().p2).getI();
+        int y3 = sc.realToScreen(triangle.getS2().p2).getJ();
 
-        for (double i = 0; i <= steps; i+=e) {
-            double k= (x1 - X) * (y2 - y1) - (x2 - x1) * (y1 - Y);
-            double m= (x2 - X) * (y3 - y2) - (x3 - x2) * (y2 - Y);
-            double n= (x3 - X) * (y1 - y3) - (x1 - x3) * (y3 - Y);
-            if((k>=0 && m>=0 && n>=0) || (k<=0 && m<=0 && n<=0)){ answer.add(new RealPoint(X,Y));}
+        for (int i = 0; i <= steps; i += 1) {
+            double k = (x1 - X) * (y2 - y1) - (x2 - x1) * (y1 - Y);
+            double m = (x2 - X) * (y3 - y2) - (x3 - x2) * (y2 - Y);
+            double n = (x3 - X) * (y1 - y3) - (x1 - x3) * (y3 - Y);
+            if ((k >= 0 && m >= 0 && n >= 0) || (k <= 0 && m <= 0 && n <= 0)) {
+                answer.add(new RealPoint(X, Y));
+            }
 
             X += Xinc;           // increment in x at each step
             Y += Yinc;           // increment in y at each step
