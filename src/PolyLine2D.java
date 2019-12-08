@@ -22,7 +22,9 @@ public class PolyLine2D implements IFIgure {//всегда замкнутая
     public void draw(DDALineDrawer ld, Color c) {
         for (Section s:sections
         ) {
-            s.draw(ld,c);
+            //s.draw(ld,c);
+            ld.drawLine(s.getP1().getX(),s.getP1().getY(),s.getP1().getX(),s.getP1().getY(),c);
+            ld.drawLine(s.getP2().getX(),s.getP2().getY(),s.getP2().getX(),s.getP2().getY(),c);
         }
     }
 
