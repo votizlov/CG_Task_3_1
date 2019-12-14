@@ -4,19 +4,19 @@ import java.util.LinkedList;
 
 public class Intersector {
 
-    public PolyLine2D findIntersectionContour(Triangle triangle, Triangle triangle1, ScreenConverter sc) {
+    public PolyLine2D findIntersectionContour(Triangle triangle, Triangle triangle1) {
         LinkedList<RealPoint> t = null;
         LinkedList<RealPoint> intersectionPoints = new LinkedList<>();
 
         for (Section s : triangle.getSectionsAsArr()) {
-            t = s.getPointsInsideTriangle(triangle1,sc);
+            t = s.getPointsInsideTriangle(triangle1);
             if (t.size()!=0)
                 intersectionPoints.addAll(t);
         }
 
 
         for (Section s : triangle1.getSectionsAsArr()) {
-            t = s.getPointsInsideTriangle(triangle,sc);
+            t = s.getPointsInsideTriangle(triangle);
             if (t.size()!=0)
                 intersectionPoints.addAll(t);
         }

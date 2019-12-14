@@ -15,16 +15,18 @@ public class PolyLine2D implements IFIgure {//всегда замкнутая
     public void draw(DDALineDrawer ld, ScreenConverter sc, Color c) {
         for (Section s:sections
              ) {
-            s.draw(ld,sc,c);
+            //s.draw(ld,sc,c);
+            ld.drawLine(sc.realToScreen(s.getP1()).getI(),sc.realToScreen(s.getP1()).getJ(),sc.realToScreen(s.getP1()).getI(),sc.realToScreen(s.getP1()).getJ(),c);
+            ld.drawLine(sc.realToScreen(s.getP2()).getI(),sc.realToScreen(s.getP2()).getJ(),sc.realToScreen(s.getP2()).getI(),sc.realToScreen(s.getP2()).getJ(),c);
         }
     }
 
     public void draw(DDALineDrawer ld, Color c) {
         for (Section s:sections
         ) {
-            //s.draw(ld,c);
-            ld.drawLine(s.getP1().getX(),s.getP1().getY(),s.getP1().getX(),s.getP1().getY(),c);
-            ld.drawLine(s.getP2().getX(),s.getP2().getY(),s.getP2().getX(),s.getP2().getY(),c);
+            s.draw(ld,c);
+            //ld.drawLine(s.getP1().getX(),s.getP1().getY(),s.getP1().getX(),s.getP1().getY(),c);
+            //ld.drawLine(s.getP2().getX(),s.getP2().getY(),s.getP2().getX(),s.getP2().getY(),c);
         }
     }
 

@@ -44,31 +44,30 @@ public class Section implements IFIgure {
         ld.drawLine(p1.getX(), p1.getY(), p2.getX(), p2.getY(), c);
     }
 
-    public LinkedList<RealPoint> getPointsInsideTriangle(Triangle triangle, ScreenConverter sc) {
+    public LinkedList<RealPoint> getPointsInsideTriangle(Triangle triangle) {
 
         LinkedList<RealPoint> answer = new LinkedList<>();
         // calculate dx & dy
-        int dx = sc.realToScreen(p2).getI() - sc.realToScreen(p1).getI();
-        int dy = sc.realToScreen(p2).getJ() - sc.realToScreen(p1).getJ();
+        double dx = p2.getX() - p1.getX();
+        double dy = p2.getY() - p1.getY();
 
         // calculate steps required for generating pixels
-        int steps = abs(dx) > abs(dy) ? abs(dx) : abs(dy);
+        double steps =(abs(dx) > abs(dy) ? abs(dx) : abs(dy))*100;
 
         // calculate increment in x & y for each steps
-        double Xinc = dx / (double) steps;
-        double Yinc = dy / (double) steps;
+        double Xinc = dx /  steps;
+        double Yinc = dy /  steps;
 
         // Put pixel for each step
-        double X = sc.realToScreen(p1).getI();
-        double Y = sc.realToScreen(p1).getJ();
+        double X = p1.getX();
+        double Y = p1.getY();
 
-        int x1 = sc.realToScreen(triangle.getS1().p1).getI();
-        int y1 = sc.realToScreen(triangle.getS1().p1).getJ();
-        int x2 = sc.realToScreen(triangle.getS1().p2).getI();
-        int y2 = sc.realToScreen(triangle.getS1().p2).getJ();
-        int x3 = sc.realToScreen(triangle.getS2().p2).getI();
-        int y3 = sc.realToScreen(triangle.getS2().p2).getJ();
-
+        double x1 = triangle.getS1().p1.getX();
+        double y1 = triangle.getS1().p1.getY();
+        double x2 = triangle.getS1().p2.getX();
+        double y2 = triangle.getS1().p2.getY();
+        double x3 = triangle.getS2().p2.getX();
+        double y3 = triangle.getS2().p2.getY();
         for (int i = 0; i <= steps; i += 1) {
             double k = (x1 - X) * (y2 - y1) - (x2 - x1) * (y1 - Y);
             double m = (x2 - X) * (y3 - y2) - (x3 - x2) * (y2 - Y);
@@ -80,6 +79,7 @@ public class Section implements IFIgure {
             X += Xinc;           // increment in x at each step
             Y += Yinc;           // increment in y at each step
         }
+        System.out.println(answer.size());
         return answer;
     }
 }

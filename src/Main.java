@@ -52,7 +52,7 @@ public class Main {
                 t.draw(ld, sc, Color.gray);
             }
 
-            in.findIntersectionContour(figuresList.get(0), figuresList.get(1),sc).draw(ld, Color.RED);
+            in.findIntersectionContour(figuresList.get(0), figuresList.get(1)).draw(ld,sc, Color.RED);
 
             g.drawImage(bi, 0, 0, null);
         }
